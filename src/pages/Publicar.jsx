@@ -54,7 +54,7 @@ function Publicar({ token }) {
         });
 
         try {
-            const respuesta = await fetch('http://localhost:3000/api/productos', {
+            const respuesta = await fetch('/api/productos', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`

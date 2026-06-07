@@ -32,7 +32,7 @@ const PanelAdmin = () => {
         try {
             const token = localStorage.getItem('token');
 
-            const res = await fetch('http://localhost:3000/api/admin/usuarios', {
+            const res = await fetch('/api/admin/usuarios', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -52,7 +52,7 @@ const PanelAdmin = () => {
         try {
             const token = localStorage.getItem('token');
 
-            const res = await fetch(`http://localhost:3000/api/admin/usuarios/${id}/estado`, {
+            const res = await fetch(`/api/admin/usuarios/${id}/estado`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ const PanelAdmin = () => {
         try {
             const token = localStorage.getItem('token');
 
-            const res = await fetch('http://localhost:3000/api/admin/productos', {
+            const res = await fetch('/api/admin/productos', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -102,7 +102,7 @@ const PanelAdmin = () => {
         try {
             const token = localStorage.getItem('token');
 
-            const res = await fetch(`http://localhost:3000/api/admin/productos/${id}`, {
+            const res = await fetch(`/api/admin/productos/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -125,7 +125,7 @@ const PanelAdmin = () => {
         try {
             const token = localStorage.getItem('token');
 
-            const res = await fetch('http://localhost:3000/api/admin/pedidos', {
+            const res = await fetch('/api/admin/pedidos', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -146,7 +146,7 @@ const PanelAdmin = () => {
         try {
             const token = localStorage.getItem('token');
 
-            const res = await fetch('http://localhost:3000/api/admin/contactos', {
+            const res = await fetch('/api/admin/contactos', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -174,7 +174,7 @@ const PanelAdmin = () => {
         try {
             const token = localStorage.getItem('token');
 
-            const res = await fetch('http://localhost:3000/api/admin/promover', {
+            const res = await fetch('/api/admin/promover', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -358,7 +358,7 @@ const PanelAdmin = () => {
                             {productosActuales.map(p => {
                                 const imagenPrincipal =
                                     p.imagenes && p.imagenes.length > 0
-                                        ? `http://localhost:3000${p.imagenes[0]}`
+                                        ? `${p.imagenes[0]}`
                                         : 'https://via.placeholder.com/60?text=Sin+Foto';
 
                                 return (

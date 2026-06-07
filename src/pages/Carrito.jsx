@@ -48,7 +48,7 @@ function Carrito({ carrito, setCarrito, token }) {
         setProcesando(true);
 
         try {
-            const res = await fetch('http://localhost:3000/api/pedidos', {
+            const res = await fetch('/api/pedidos', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -12,7 +12,7 @@ function MisCompras({ token }) {
 
     const obtenerPedidos = async () => {
         try {
-            const res = await fetch('http://localhost:3000/api/mis-pedidos', {
+            const res = await fetch('/api/mis-pedidos', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const datos = await res.json();
@@ -28,7 +28,7 @@ function MisCompras({ token }) {
         if (!window.confirm("¿Seguro que deseas cancelar este pedido? Solo tienes 20 minutos tras la compra.")) return;
 
         try {
-            const res = await fetch(`http://localhost:3000/api/pedidos/${id}/cancelar`, {
+            const res = await fetch(`/api/pedidos/${id}/cancelar`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

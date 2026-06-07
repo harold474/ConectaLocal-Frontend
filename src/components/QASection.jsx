@@ -13,7 +13,7 @@ export default function QASection({ itemId, userRole }) {
 
   const fetchQA = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/productos/${itemId}/preguntas`);
+      const response = await fetch(`/api/productos/${itemId}/preguntas`);
       if (response.ok) {
         const data = await response.json();
         setQas(data);
@@ -29,7 +29,7 @@ export default function QASection({ itemId, userRole }) {
 
     const token = localStorage.getItem("token");
     try {
-      const response = await fetch(`http://localhost:3000/api/productos/${itemId}/preguntas`, {
+      const response = await fetch(`/api/productos/${itemId}/preguntas`, {
         method: "POST",
         headers: { 
             "Content-Type": "application/json",
@@ -77,7 +77,7 @@ export default function QASection({ itemId, userRole }) {
                   <button 
                     onClick={async () => {
                         const token = localStorage.getItem("token");
-                        await fetch(`http://localhost:3000/api/preguntas/${qa.id}/responder`, {
+                        await fetch(`/api/preguntas/${qa.id}/responder`, {
                             method: "PUT",
                             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
                             body: JSON.stringify({ respuesta: answerInputs[qa.id] })

@@ -17,7 +17,7 @@ function Catalogo({ agregarAlCarrito }) {
     const PRODUCTOS_POR_PAGINA = 48; 
 
     useEffect(() => {
-        fetch('http://localhost:3000/api/productos')
+        fetch('/api/productos')
             .then(respuesta => respuesta.json())
             .then(datos => {
                 setProductos(datos);
@@ -201,7 +201,7 @@ function Catalogo({ agregarAlCarrito }) {
                         <div key={producto.id} className="tarjeta-market">
                             <div style={{ width: '100%', height: '170px', position: 'relative', backgroundColor: '#f4f7f6' }}>
                                 {producto.imagenes?.length > 0 ? (
-                                    <img src={`http://localhost:3000${producto.imagenes[0]}`} alt={producto.nombre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    <img src={`${producto.imagenes[0]}`} alt={producto.nombre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                 ) : (
                                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', fontSize: '3.5rem' }}>{obtenerIcono(producto.categoria)}</div>
                                 )}

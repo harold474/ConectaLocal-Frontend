@@ -16,7 +16,7 @@ function MisProductos({ token }) {
 
     const obtenerMisProductos = async () => {
         try {
-            const res = await fetch('http://localhost:3000/api/mis-productos', {
+            const res = await fetch('/api/mis-productos', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
@@ -37,7 +37,7 @@ function MisProductos({ token }) {
     // --- FUNCIÓN PARA GUARDAR CAMBIOS RÁPIDOS (STOCK/PRECIO) ---
     const actualizarProducto = async (id, nuevoStock, nuevoPrecio) => {
         try {
-            const res = await fetch(`http://localhost:3000/api/productos/${id}/gestion`, {
+            const res = await fetch(`/api/productos/${id}/gestion`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ function MisProductos({ token }) {
         if (!window.confirm("¿Seguro que deseas eliminar este producto permanentemente? Esta acción no se puede deshacer.")) return;
 
         try {
-            const res = await fetch(`http://localhost:3000/api/productos/${id}`, {
+            const res = await fetch(`/api/productos/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -240,7 +240,7 @@ function MisProductos({ token }) {
                             >
                                 {producto.imagenes && producto.imagenes[0] ? (
                                     <img
-                                        src={`http://localhost:3000${producto.imagenes[0]}`}
+                                        src={`${producto.imagenes[0]}`}
                                         alt={producto.nombre}
                                         style={{
                                             width: '100%',

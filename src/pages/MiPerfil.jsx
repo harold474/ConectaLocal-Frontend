@@ -17,7 +17,7 @@ function MiPerfil({ token }) {
 
     const obtenerPerfil = async () => {
         try {
-            const res = await fetch('http://localhost:3000/api/perfil', {
+            const res = await fetch('/api/perfil', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
@@ -51,7 +51,7 @@ function MiPerfil({ token }) {
         e.preventDefault(); // Evita que la página se recargue
         setGuardando(true);
         try {
-            const res = await fetch('http://localhost:3000/api/perfil', {
+            const res = await fetch('/api/perfil', {
                 method: 'PUT',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ function MiPerfil({ token }) {
         formData.append('foto', archivo);
 
         try {
-            const res = await fetch('http://localhost:3000/api/perfil/foto', {
+            const res = await fetch('/api/perfil/foto', {
                 method: 'PUT',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: formData
@@ -122,7 +122,7 @@ function MiPerfil({ token }) {
                         boxShadow: '0 4px 10px rgba(0,0,0,0.1)'
                     }}>
                         {perfil.foto_perfil ? (
-                            <img src={`http://localhost:3000${perfil.foto_perfil}`} alt="Perfil" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <img src={`${perfil.foto_perfil}`} alt="Perfil" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         ) : (
                             <span style={{ fontSize: '4rem' }}>{perfil.rol === 'productor' ? '🏪' : '👤'}</span>
                         )}

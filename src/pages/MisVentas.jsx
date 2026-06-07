@@ -12,7 +12,7 @@ function MisVentas({ token }) {
 
     const obtenerVentas = async () => {
         try {
-            const res = await fetch('http://localhost:3000/api/mis-ventas', {
+            const res = await fetch('/api/mis-ventas', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const datos = await res.json();
@@ -29,7 +29,7 @@ function MisVentas({ token }) {
         setVentas(prev => prev.map(v => v.pedido_id === id ? { ...v, estado: nuevoEstado } : v));
 
         try {
-            const res = await fetch(`http://localhost:3000/api/pedidos/${id}/estado`, {
+            const res = await fetch(`/api/pedidos/${id}/estado`, {
                 method: 'PUT',
                 headers: { 
                     'Content-Type': 'application/json',
