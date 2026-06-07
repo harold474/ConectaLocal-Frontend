@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+// IMPORTACIÓN CORREGIDA: Siempre debe ir arriba del todo.
+// Nota: Ajusta la ruta a '../components/QASection' si Catalogo está en la carpeta 'pages'
+import QASection from '../components/QASection'; 
 
 function Catalogo({ agregarAlCarrito }) {
     const [productos, setProductos] = useState([]);
@@ -7,6 +10,10 @@ function Catalogo({ agregarAlCarrito }) {
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('Todas');
     const [paginaActual, setPaginaActual] = useState(1);
     
+    // NUEVO ESTADO: Controla qué producto tiene abierto el modal de preguntas
+    const [modalQA, setModalQA] = useState(null); 
+    const rolUsuario = localStorage.getItem('rol');
+
     const PRODUCTOS_POR_PAGINA = 48; 
 
     useEffect(() => {
@@ -119,6 +126,47 @@ function Catalogo({ agregarAlCarrito }) {
                 .input-cantidad-pro:focus {
                     border-color: #27ae60;
                 }
+
+                /* ESTILOS DEL MODAL DE PREGUNTAS */
+                .modal-overlay {
+                    position: fixed;
+                    top: 0; left: 0; right: 0; bottom: 0;
+                    background: rgba(0,0,0,0.7);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                    padding: 20px;
+                    backdrop-filter: blur(4px);
+                }
+                .modal-content {
+                    background: white;
+                    border-radius: 15px;
+                    width: 100%;
+                    max-width: 650px;
+                    max-height: 85vh;
+                    overflow-y: auto;
+                    position: relative;
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+                }
+                .btn-cerrar-modal {
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                    background: #e74c3c;
+                    color: white;
+                    border: none;
+                    border-radius: 50%;
+                    width: 32px;
+                    height: 32px;
+                    cursor: pointer;
+                    font-weight: bold;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    transition: 0.2s;
+                }
+                .btn-cerrar-modal:hover { background: #c0392b; transform: scale(1.1); }
             `}</style>
 
             <div style={{ textAlign: 'center', marginBottom: '40px' }}>
@@ -175,14 +223,14 @@ function Catalogo({ agregarAlCarrito }) {
 
                                 <div style={{ marginTop: 'auto', paddingTop: '15px' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-                                        {/* AQUÍ ESTABA EL ERROR: Cambiado </h2> por </span> */}
                                         <span style={{ fontSize: '1.4rem', fontWeight: '900', color: '#27ae60' }}>
                                             ${Number(producto.precio).toLocaleString()}
                                         </span>
                                         <span style={{ fontSize: '0.7rem', color: '#7f8c8d', background: '#f8f9fa', padding: '3px 7px', borderRadius: '5px' }}>Stock: {producto.stock}</span>
                                     </div>
 
-                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                    {/* CONTROLES DE COMPRA */}
+                                    <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
                                         <input 
                                             type="number" value={cant} min="1" max={producto.stock}
                                             onChange={(e) => manejarCambioCantidad(producto.id, e.target.value, producto.stock)}
@@ -190,11 +238,19 @@ function Catalogo({ agregarAlCarrito }) {
                                         />
                                         <button 
                                             onClick={() => agregarAlCarrito({ ...producto, cantidad: cant })}
-                                            style={{ flexGrow: 1, backgroundColor: '#27ae60', color: 'white', border: 'none', borderRadius: '10px', fontWeight: '800', fontSize: '0.9rem', cursor: 'pointer', transition: '0.2s' }}
+                                            style={{ flexGrow: 1, backgroundColor: '#27ae60', color: 'white', border: 'none', borderRadius: '8px', fontWeight: '800', fontSize: '0.9rem', cursor: 'pointer', transition: '0.2s' }}
                                         >
                                             🛒 Añadir
                                         </button>
                                     </div>
+                                    
+                                    {/* NUEVO BOTÓN DE PREGUNTAS */}
+                                    <button 
+                                        onClick={() => setModalQA(producto)}
+                                        style={{ width: '100%', backgroundColor: '#f1f2f6', color: '#2c3e50', border: '1px solid #dfe4ea', borderRadius: '8px', padding: '8px', fontWeight: '700', fontSize: '0.85rem', cursor: 'pointer', transition: '0.2s' }}
+                                    >
+                                        💬 Preguntas y Respuestas
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -209,6 +265,25 @@ function Catalogo({ agregarAlCarrito }) {
                     <button onClick={() => setPaginaActual(prev => Math.min(prev + 1, totalPaginas))} disabled={paginaActual === totalPaginas} style={{ backgroundColor: '#2c3e50', color: 'white', padding: '12px 25px', borderRadius: '30px', border: 'none', cursor: 'pointer', fontWeight: 'bold', opacity: paginaActual === totalPaginas ? 0.5 : 1 }}>Siguiente ➡️</button>
                 </div>
             )}
+
+            {/* RENDERIZADO DEL MODAL DE PREGUNTAS */}
+            {modalQA && (
+                <div className="modal-overlay" onClick={() => setModalQA(null)}>
+                    {/* onClick={(e) => e.stopPropagation()} evita que al hacer clic dentro de la ventana se cierre */}
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <button className="btn-cerrar-modal" onClick={() => setModalQA(null)}>X</button>
+                        
+                        <div style={{ padding: '20px 20px 0 20px' }}>
+                            <p style={{ color: '#7f8c8d', fontSize: '0.9rem', margin: '0 0 5px 0' }}>Resolviendo dudas sobre el producto:</p>
+                            <h3 style={{ margin: '0 0 10px 0', color: '#2c3e50', fontSize: '1.4rem' }}>{modalQA.nombre}</h3>
+                        </div>
+
+                        {/* AQUÍ INYECTAMOS TU COMPONENTE DE PREGUNTAS */}
+                        <QASection itemId={modalQA.id} userRole={rolUsuario} />
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }

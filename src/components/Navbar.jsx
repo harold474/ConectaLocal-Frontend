@@ -7,24 +7,46 @@ function Navbar({ cantidadCarrito, token, setToken }) {
     
     // Obtenemos el rol y el nombre del usuario para decidir qué botones mostrar
     const rol = localStorage.getItem('rol');
-    const nombreUsuario = localStorage.getItem('nombreUsuario'); // <-- NUEVO: Obtenemos el nombre
+    const nombreUsuario = localStorage.getItem('nombreUsuario'); 
 
     const cerrarSesion = () => {
         localStorage.clear(); // Borra token, rol y datos de sesión
-        setToken(null);                   
+        setToken(null);                    
         toast.success("Sesión cerrada exitosamente");
-        navigate('/');                    
+        navigate('/');                     
+    };
+
+    // Estilos constantes para mantener la consistencia profesional
+    const btnStyle = {
+        padding: '8px 16px',
+        borderRadius: '8px',
+        textDecoration: 'none',
+        color: 'white',
+        fontSize: '0.85rem',
+        fontWeight: '600',
+        transition: 'all 0.3s ease',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px'
     };
 
     return (
-        <nav className="navbar-container">
+        <nav className="navbar-container" style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center', 
+            padding: '15px 30px', 
+            backgroundColor: '#1a252f', 
+            color: 'white',
+            boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+        }}>
             <h2 style={{ margin: 0 }}>
-                <Link to="/" className="navbar-logo">ConectaLocal</Link>
+                <Link to="/" className="navbar-logo" style={{ textDecoration: 'none', color: '#27ae60', fontSize: '1.5rem', fontWeight: '800' }}>ConectaLocal</Link>
             </h2>
             
-            <div className="navbar-acciones">
+            <div className="navbar-acciones" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                 {/* El carrito siempre es visible */}
-                <Link to="/carrito" className="carrito-texto" style={{ color: 'white', textDecoration: 'none', marginRight: '20px' }}>
+                <Link to="/carrito" className="carrito-texto" style={{ color: 'white', textDecoration: 'none', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '5px' }}>
                     🛒 Carrito: <strong>{cantidadCarrito}</strong>
                 </Link>
 
@@ -34,29 +56,23 @@ function Navbar({ cantidadCarrito, token, setToken }) {
                         {/* 1. BOTONES EXCLUSIVOS PARA PRODUCTORES */}
                         {rol === 'productor' && (
                             <>
-                                {/* NUEVO BOTÓN: MIS PRODUCTOS */}
-                                <Link to="/mis-productos" className="btn-nav" style={{ backgroundColor: '#27ae60', marginRight: '10px' }}>
-                                    📁 Mis Productos
-                                </Link>
-
-                                <Link to="/mis-ventas" className="btn-nav" style={{ backgroundColor: '#2980b9', marginRight: '10px' }}>
-                                    📦 Mis Ventas
-                                </Link>
-
-                                <Link to="/publicar" className="btn-nav" style={{ backgroundColor: '#f39c12', marginRight: '10px' }}>
-                                    + Publicar
-                                </Link>
+                                <Link to="/mis-productos" style={{ ...btnStyle, backgroundColor: '#27ae60' }}>📁 Mis Productos</Link>
+                                <Link to="/mis-ventas" style={{ ...btnStyle, backgroundColor: '#2980b9' }}>📦 Mis Ventas</Link>
+                                <Link to="/publicar" style={{ ...btnStyle, backgroundColor: '#f39c12' }}>+ Publicar</Link>
                             </>
                         )}
 
                         {/* 2. BOTÓN EXCLUSIVO PARA CONSUMIDORES */}
                         {rol === 'consumidor' && (
-                            <Link to="/mis-compras" className="btn-nav" style={{ backgroundColor: '#8e44ad', marginRight: '10px' }}>
-                                🛍️ Mis Compras
-                            </Link>
+                            <Link to="/mis-compras" style={{ ...btnStyle, backgroundColor: '#8e44ad' }}>🛍️ Mis Compras</Link>
                         )}
 
-                        {/* --- NUEVO: ENLACE A MI PERFIL (Visible para todos los logueados) --- */}
+                        {/* 3. BOTÓN EXCLUSIVO PARA ADMINISTRADORES */}
+                        {(rol === 'admin' || rol === 'administrador') && (
+                            <Link to="/admin/usuarios" style={{ ...btnStyle, backgroundColor: '#e74c3c' }}>🛡️ Panel Admin</Link>
+                        )}
+
+                        {/* --- ENLACE A MI PERFIL --- */}
                         <Link 
                             to="/perfil" 
                             style={{ 
@@ -65,26 +81,28 @@ function Navbar({ cantidadCarrito, token, setToken }) {
                                 gap: '8px', 
                                 background: 'rgba(255,255,255,0.1)', 
                                 padding: '8px 15px', 
-                                borderRadius: '20px',
+                                borderRadius: '20px', 
                                 textDecoration: 'none',
-                                marginRight: '10px'
+                                color: 'white',
+                                fontSize: '0.9rem',
+                                fontWeight: '600'
                             }}
                         >
-                            👤 <span style={{ color: 'white', fontWeight: 'bold' }}>{nombreUsuario || 'Mi Perfil'}</span>
+                            👤 {nombreUsuario || 'Mi Perfil'}
                         </Link>
 
-                        {/* Botón de salir visible para todos */}
-                        <button onClick={cerrarSesion} className="btn-nav btn-login">
+                        {/* Botón de salir */}
+                        <button onClick={cerrarSesion} style={{ ...btnStyle, backgroundColor: 'transparent', border: '1px solid #7f8c8d', color: '#ecf0f1', cursor: 'pointer' }}>
                             Cerrar Sesión
                         </button>
                     </>
                 ) : (
-                    /* --- SECCIÓN PARA VISITANTES (SIN LOGUEAR) --- */
+                    /* --- SECCIÓN PARA VISITANTES --- */
                     <>
-                        <Link to="/registro" className="btn-nav btn-registro">
+                        <Link to="/registro" style={{ ...btnStyle, backgroundColor: 'transparent', border: '1px solid #27ae60', color: '#27ae60' }}>
                             Registrarse
                         </Link>
-                        <Link to="/login" className="btn-nav btn-login">
+                        <Link to="/login" style={{ ...btnStyle, backgroundColor: '#27ae60' }}>
                             Iniciar Sesión
                         </Link>
                     </>
